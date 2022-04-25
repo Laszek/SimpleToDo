@@ -27,6 +27,10 @@ h1{
     width: 2.15rem;
 }
 
+.todo-list{
+    padding:0;
+}
+
 .task-margin, .header-margin{
     position: relative; 
     display: flex;
@@ -36,10 +40,16 @@ h1{
     height: 2.5rem;
 }
 
-.task, .header{
+.task-container, .header, .task-creator{
     display: flex;
     border-bottom: solid 1px #eee;
     color: #2e3641;
+}
+
+.task{
+    display: flex;
+    flex-direction: column;
+    transition: height 2s;
 }
 
 .header-content h1{
@@ -71,6 +81,12 @@ h1{
 
 .task-delete{
     margin: 0 15px 0 0 ;
+}
+
+.over {
+    background: #e9f0f4;
+    border: dashed 2px #cccccc;
+    height: 10px;
 }
 
 .delete-all{

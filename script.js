@@ -1,9 +1,8 @@
-let taskIterator = 0;
 
 class Task {
-    constructor(title, status){
+    constructor(title, status, taskIterator){
         this.title = title;
-        this.id = ++taskIterator;
+        this.id = taskIterator;
         this.isDone = status;
     }
 
@@ -25,14 +24,19 @@ class Task {
     }
     
     createTaskObj(){
-        const taskObject = document.createElement('div');
+        const taskObject = document.createElement('li');
         taskObject.classList = "task " + (this.isDone==true ? "done" : "");
         taskObject.setAttribute("draggable", "true");
+        taskObject.setAttribute("data-index", this.id);
+        
+        const taskContainer = document.createElement('div');
+        taskContainer.classList = "task-container";
+        taskObject.append(taskContainer);
         
         const taskMargin = document.createElement('label');
         taskMargin.classList = "task-margin";
         taskMargin.setAttribute("for", `checkbox${this.id}`);
-        taskObject.append(taskMargin);
+        taskContainer.append(taskMargin);
         
         const taskCheckbox = document.createElement('input');
         taskCheckbox.type = "checkbox";
@@ -43,7 +47,7 @@ class Task {
         
         const taskContent = document.createElement('div');
         taskContent.classList = "task-content";
-        taskObject.append(taskContent);
+        taskContainer.append(taskContent);
         
         const taskTitle = document.createElement('p');
         taskTitle.classList = "task-title";
@@ -73,20 +77,25 @@ function updateLocalStorage(){
 function loadTasks(){
     taskArr = [];
     const taskStorage = JSON.parse(localStorage.getItem("taskStorage"));
-    if(taskStorage!=undefined)
-        createTaskObjects(taskStorage);
+    if(taskStorage!=undefined){
+        console.log(taskStorage)
+        createTaskObjects(taskStorage);}
+
+    addEventListeners();
+    addTaskCreator();
 }
 
 function createTaskObjects(arr){
+    let taskIterator = 0;
     for(let task of arr){
-        let taskEl = new Task(task.title, task.isDone);
+        let taskEl = new Task(task.title, task.isDone, taskIterator++);
         taskArr.push(taskEl);
     }
     loadTasksOnScreen(taskArr);
 }
 
 function loadTasksOnScreen(arr){
-    const allTasksElements = document.querySelectorAll(".task");
+    const allTasksElements = document.querySelectorAll(".task, .task-creator");
 
     for(let el of allTasksElements) {
         el.remove();
@@ -97,20 +106,19 @@ function loadTasksOnScreen(arr){
     });
 
     markDoneTasks();
-    addTaskCreator();
 }
 
 function markDoneTasks(){
     const doneTasks = document.getElementsByClassName("done");
 
     for (let item of doneTasks) {
-        item.firstChild.firstChild.checked = true;
+        item.querySelector(".task-checkbox").checked = true;
     }
 }
 
 function addTaskCreator(){
     const taskObject = document.createElement('div');
-    taskObject.classList = "task creator";
+    taskObject.classList = "task-creator";
 
     const taskMargin = document.createElement('label');
     taskMargin.setAttribute("for", `add`);
@@ -145,7 +153,7 @@ function addNewTask() {
     }
     else {
         titleInput.classList.remove("empty");
-        const task = new Task(titleInput.value, false);
+        const task = new Task(titleInput.value, false, taskArr.length);
 
         taskArr.push(task);
         updateLocalStorage();
@@ -156,11 +164,64 @@ function addNewTask() {
 function deleteAllTasks(){
     taskArr = [];
     updateLocalStorage();
-    console.log("Hihi")
 }
-const deleteAllButton = document.querySelectorAll(".delete-all")[0];
-console.log(deleteAllButton);
-deleteAllButton.addEventListener('click', deleteAllTasks);
+// Drag and Drop
 
+const placeholder = document.createElement('div');
+placeholder.classList.add('over');
+
+let dragStartIndex;
+function dragStart() {
+    dragStartIndex = +this.closest('li').getAttribute("data-index");
+    console.log(dragStartIndex)
+}
+
+function dragOver(e) {
+    e.stopPropagation();
+    e.preventDefault();
+}
+
+function dragDrop() {
+    const dragEndIndex = +this.getAttribute('data-index');
+    let _tmp = new Task;
+    _tmp = taskArr.splice(dragStartIndex,1)[0];
+    taskArr.splice(dragEndIndex, 0, _tmp);
+
+    placeholder.classList.toggle("over-show");
+    updateLocalStorage();
+    addEventListeners();
+}
+
+function dragEnter() {
+    placeholder.classList.toggle("over-show");
+    
+    if(dragStartIndex > +this.closest('li').getAttribute("data-index")){
+        this.firstChild.before(placeholder);
+    }else{
+        this.firstChild.after(placeholder);
+    }
+}
+
+function dragLeave() {
+}
+
+function addEventListeners(){
+    const draggables = document.querySelectorAll('[draggable="true"]');
+    const dragListItems = document.querySelectorAll('.todo-list li')
+    
+    draggables.forEach(draggable => {
+       draggable.addEventListener('dragstart', dragStart) 
+    });
+    
+    dragListItems.forEach(item => {
+       item.addEventListener('dragover', dragOver);
+       item.addEventListener('drop', dragDrop);
+       item.addEventListener('dragenter', dragEnter);
+       item.addEventListener('dragleave', dragLeave);
+    });
+}
+
+const deleteAllButton = document.querySelectorAll(".delete-all")[0];
+deleteAllButton.addEventListener('click', deleteAllTasks);
 
 loadTasks();
