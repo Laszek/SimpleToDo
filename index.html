@@ -1,10 +1,51 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>ToDo</title>
+    <script src="script.js" defer></script>
+    <link href="style.css" type="text/css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
 </head>
 <body>
-$END$
+    <div class="site-container">
+        <header class="header">
+            <div class="header-margin"></div>
+            <div class="header-content">
+                <h1>ToDo List</h1>
+                <button class="task-delete delete-all"><img src="https://icons.getbootstrap.com/assets/icons/trash.svg"></button>
+            </div>
+        </header>
+        <main class="todo-list">
+            <div class="task">
+                <label for="checkbox" class="task-margin">
+                    <input type="checkbox" id="checkbox" class="task-checkbox">
+                </label>
+                <div class="task-content">
+                    <p class="task-title">Tytuł zadania</p>
+                    <button class="task-delete"><img src="https://icons.getbootstrap.com/assets/icons/trash.svg"></button>
+                </div>
+            </div>
+            <div class="task done">
+                <label for="checkbox2" class="task-margin">
+                    <input type="checkbox" id="checkbox2" class="task-checkbox">
+                </label>
+                <div class="task-content">
+                    <p class="task-title">Tytuł zadania</p>
+                    <button class="task-delete"><img src="https://icons.getbootstrap.com/assets/icons/trash.svg"></button>
+                </div>
+            </div>
+            <div class="task create">
+                <label for="add" class="task-margin">
+                    <button id="add" class="task-add">+</button>
+                </label>
+                <div class="task-content">
+                    <input type="text" class="task-title" id="task-create">
+                </div>
+            </div>
+        </main>
+    </div>
 </body>
 </html>

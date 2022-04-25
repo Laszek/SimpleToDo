@@ -1,0 +1,131 @@
+﻿*, *::after, *::before {
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Lato', sans-serif;
+}
+
+body{
+    background: #e9f0f4;
+}
+
+h1{
+    font-size: 1.6rem;
+}
+
+.site-container{
+    margin: 5em auto;
+    background: #fff;
+    width: 600px;
+}
+
+.header{
+    background: #2e3641;
+    height:100%;
+}
+
+.header-margin{
+    width: 2.15rem;
+}
+
+.task-margin, .header-margin{
+    position: relative; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.task, .header{
+    display: flex;
+    border-bottom: solid 1px #eee;
+    color: #2e3641;
+}
+
+.header-content h1{
+    position: relative;
+    color: #e9f0f4;
+}
+
+.task-content, .header-content{
+    position: relative;
+    display: flex;
+    width:100%;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0 0 1rem;
+}
+
+.done{
+    color: #9eb2c0;
+    text-decoration: line-through;
+}
+
+.task-delete, .task-add{
+    margin:0;
+    padding: 0;
+    border:0;
+    background: 0;
+    filter: brightness(250%);
+}
+
+.task-delete{
+    margin: 0 15px 0 0 ;
+}
+
+.delete-all{
+    background: #fff;
+    margin:0;
+    padding:.5rem;
+}
+.delete-all img{
+    width: 30px;
+}
+
+.task-add{
+    font-size:1.5rem;
+    font-weight: bold;
+    color: #2e3641;
+}
+
+.creator, .creator input{
+    background: #f3f3f3;
+}
+
+input.task-title{
+    border:0;
+    height:100%;
+    width: 100%;
+    color: grey;
+    font-weight: bold;
+}
+
+input.task-title.empty{
+    border-bottom: solid 2px #b84545;
+}
+
+.task-delete:hover, .task-add:hover{
+    cursor: pointer;
+    color: #000;
+}
+
+input.task-title:focus{
+    outline: none;
+    border-bottom: solid 1px grey;
+}
+
+.header-content::before, .task-content::before{
+    content: "";
+    display: block;
+    width: .4rem;
+    height: 100%;
+    position: absolute;
+    top:0;
+    left:0;
+    border: solid 1px #e9f0f4;
+    border-width: 0px 1px 0px 1px;
+}
+
+.task-content::before {
+    border-color: #f5d5cc;
+}
